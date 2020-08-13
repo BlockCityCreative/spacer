@@ -6,8 +6,9 @@ minetest.register_chatcommand("space", {
     func = function(name)
         local player = minetest.get_player_by_name(name)
         local pos = player:get_pos()
-        if pos[y]>=20000 then
-            print("yay")    
+        if pos["y"]>=20000 then
+            print("yay")
+            minetest.add_node(pos, "air")    
         else
             print("feck off")
         end
