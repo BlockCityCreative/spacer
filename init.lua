@@ -6,9 +6,8 @@ minetest.register_chatcommand("space", {
     func = function(name)
         local player = minetest.get_player_by_name(name)
         local pos = player:get_pos()
-        for k in pairs(pos) do
-            print(pos[k])
-        end
-       
+        for k in pairs(pos) do 
+            print(k)
+        end       
     end
 })
