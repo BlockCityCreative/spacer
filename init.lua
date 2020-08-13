@@ -6,8 +6,10 @@ minetest.register_chatcommand("space", {
     func = function(name)
         local player = minetest.get_player_by_name(name)
         local pos = player:get_pos()
-        for k in pairs(pos) do 
-            print(k)
-        end       
+        if pos[y]>=20000 then
+            print("yay")    
+        else
+            print("feck off")
+        end
     end
 })
