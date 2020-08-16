@@ -51,13 +51,13 @@ minetest.register_chatcommand("space", {
 
             if not canPlace then
                 minetest.chat_send_player(name, "You have been suspected of griefing. this incident will be reported")
-                print(name.."attempts to place node at protected area at pos"..tostring(pos["x"])..", "..tostring(pos["y"])..", "..tostring(pos["z"]))
+                print(name.."attempts to place node at protected area at pos"..minetest.pos_to_string(pos, 1))
                 
             end
 
             if (  numTimes[name] or 0) >= maxTimes then
                 minetest.chat_send_player(name, "you are ssuspected of spamming the comman to place a block.please wait until a reboot before retrying. this incident will be reported")
-                print(name.."used the space command multiple times. the command was again executed at "..tostring(pos["x"])..", "..tostring(pos["y"])..", "..tostring(pos["z"]))
+                print(name.."used the space command multiple times. the command was again executed at "..minetest.pos_to_string(pos, 1))
             end
         end
     end
@@ -72,7 +72,7 @@ minetest.register_chatcommand("set_space_spawn", {
         if pos.y >= spaceBegin then
             space_spawn = pos
             storage:set_string("space_spawn", minetest.serialize(space_spawn))
-            minetest.chat_send_player(name, "set spawn to"..(pos.x).." , "..(pos.y).." , "..(pos.z))
+            minetest.chat_send_player(name, "set spawn to"..minetest.pos_to_string(space_spawn, 1))
         else
             minetest.chat_send_player(name, "idiot, it is space_spawn, not spawn")
         end
@@ -86,5 +86,21 @@ minetest.register_chatcommand("space_spawn", {
         print(space_spawn["x"])
         player:set_pos(space_spawn)
         minetest.chat_send_player(name, "teleprted to space_spawn")
+    end
+})
+
+minetest.register_chatcommand("beam_me_up", {
+    description = "takes you up into space with the same x,z coords",
+    func = function(name)
+        player = minetest.get_player_by_name(name)
+        pos = player:get_pos()
+        if pos.y < spaceBegin then
+            space_pos = pos
+            space_pos.y = spaceBegin + ((minetest.get_gametime()%10)*100) 
+            player:set_pos(space_pos)
+            minetest.chat_send_player(name, "teleported to "..minetest.pos_to_string(pos, 1))
+        else
+            minetest.chat_send_player(name, "you are in space already")
+        end
     end
 })
