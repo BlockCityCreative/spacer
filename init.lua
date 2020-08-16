@@ -2,14 +2,12 @@ local storage = minetest.get_mod_storage()
 local maxTimes = 6-- maximum times -1 the command space can be used on one loading of the mod
 local spaceBegin = 20002
 local space_spawn = {}
-print(storage:get_string("abc").."abc")
 if storage:get_string("space_spawn") ~= "" then -- if space_spawn has been set, the value will not be nil
     space_spawn=minetest.deserialize(storage:get_string("space_spawn"))
 else -- fallback space_spawn
     space_spawn.x = 20000
     space_spawn.y = 20000
     space_spawn.z = 20000
-    
 end
 
 if not minetest.get_modpath("default") then
@@ -36,7 +34,7 @@ minetest.register_chatcommand("space", {
         pos["y"] = pos["y"] -2
         if (pos["y"]>= spaceBegin and canPlace and ((not numTimes[name]) or numTimes[name] < maxTimes) ) then
             
-            if isDefault then 
+            if isDefault then
                 minetest.set_node(pos, {name="default:dirt"})
             
             else
