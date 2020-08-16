@@ -6,7 +6,7 @@ if storage:get_string("space_spawn") ~= "" then -- if space_spawn has been set, 
     space_spawn=minetest.deserialize(storage:get_string("space_spawn"))
 else -- fallback space_spawn
     space_spawn.x = 20000
-    space_spawn.y = 20000
+    space_spawn.y = spaceBegin
     space_spawn.z = 20000
 end
 
