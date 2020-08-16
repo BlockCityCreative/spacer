@@ -1,5 +1,15 @@
+local storage = minetest.get_mod_storage()
 local maxTimes = 6-- maximum times -1 the command space can be used on one loading of the mod
 local spaceBegin = 20002
+local space_spawn = {}
+
+if storage:get_string("space_spawn") then -- if space_spawn has been set, the value will not be nil
+    space_spawn=minetest.deserialize(storage:get_string("space_spawn"))
+else -- fallback space_spawn
+    space_spawn.x = 20000
+    space_spawn.y = 20000
+    space_spawn.z = 20000
+end
 
 if not minetest.get_modpath("default") then
     minetest.register_node("spacer:seed", {
@@ -50,5 +60,31 @@ minetest.register_chatcommand("space", {
                 print(name.."used the space command multiple times. the command was again executed at "..tostring(pos["x"])..", "..tostring(pos["y"])..", "..tostring(pos["z"]))
             end
         end
+    end
+})
+
+minetest.register_chatcommand("set_space_spawn", {
+    description = "Set the space_spawn pos to your current position, for use with /space_spawn",
+    privs= {server=true},
+    func = function(name)
+        local player = minetest.get_player_by_name(name)
+        pos = player:get_pos()
+        if pos.y >= spaceBegin then
+            space_spawn = pos
+            storage:set_string("space_spawn", minetest.serialize(space_spawn))
+            minetest.chat_send_player(name, "set spawn to"..(pos.x).." , "..(pos.y).." , "..(pos.z))
+        else
+            minetest.chat_send_player(name, "idiot, it is space_spawn, not spawn")
+        end
+    end
+})
+
+minetest.register_chatcommand("space_spawn", {
+    description="Takes you to the spawn location for space",
+    func = function(name)
+        local player = minetest.get_player_by_name(name)
+        print(space_spawn["x"])
+        player:set_pos(space_spawn)
+        minetest.chat_send_player(name, "teleprted to space_spawn")
     end
 })
