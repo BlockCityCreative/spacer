@@ -70,11 +70,17 @@ minetest.register_chatcommand("set_space_spawn", {
     params = "<x> <y> <z>",
     func = function(name,param)
         local coords = {}
-        local input = param:split(" ")
+        local input = {}
+        if param ~= nil then
+            input = param:split(" ")
+        else
+            minetest.chat_send_player(name, "no args found")
+            return 0
+        end
         local bools = 0
         if #input == 3 then
             for k in ipairs(input) do
-                if not string.find(input[k],"%a") then --ensures no letters are found
+                if (not string.find(input[k],"%a")) and input[k] ~="" then --ensures no letters are found
                     bools = bools+1
                     input[k] = tonumber(input[k])
                 end
