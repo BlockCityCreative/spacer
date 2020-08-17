@@ -72,7 +72,7 @@ minetest.register_chatcommand("set_space_spawn", {
         local bools = 0
         if #input == 3 then
             for k in ipairs(input) do
-                if not string.find(input[k],"%a") then --ensures 
+                if not string.find(input[k],"%a") then --ensures no letters are found
                     bools = bools+1
                 end
             end
