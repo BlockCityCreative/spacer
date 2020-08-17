@@ -10,6 +10,8 @@ else -- fallback space_spawn
     space_spawn.z = 20000
 end
 
+print(minetest.get())
+
 if not minetest.get_modpath("default") then
     minetest.register_node("spacer:seed", {
         description = "seed for creating a new base in space, initialized and used only if default is not installed",
@@ -74,15 +76,19 @@ minetest.register_chatcommand("set_space_spawn", {
             for k in ipairs(input) do
                 if not string.find(input[k],"%a") then --ensures no letters are found
                     bools = bools+1
+                    input[k] = tonumber(input[k])
                 end
             end
 
             if bools == 3 then
-                space_spawn.x = input[1]
-                space_spawn.y = input[2]
-                space_spawn.z = input[3]
+                if input[2] > spaceBegin then
+                    space_spawn.x = input[1]
+                    space_spawn.y = input[2]
+                    space_spawn.z = input[3]
+                    minetest.chat_send_player(name, "set space_spawn to "..minetest.pos_to_string(space_spawn, 2))
+                end
                 
-                minetest.chat_send_player(name, "set space_spawn to "..minetest.pos_to_string(space_spawn, 2))
+                
             else
                 minetest.chat_send_player(name, "error. insufficient input and/or bad input. please check input. falback space_spawn set to"..minetest.pos_to_string(space_spawn, 2))
             end        
