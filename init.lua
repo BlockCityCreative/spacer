@@ -10,7 +10,7 @@ else -- fallback space_spawn
     space_spawn.z = 20000
 end
 
-print(minetest.get())
+
 
 if not minetest.get_modpath("default") then
     minetest.register_node("spacer:seed", {
