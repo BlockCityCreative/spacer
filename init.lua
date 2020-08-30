@@ -68,36 +68,16 @@ minetest.register_chatcommand("set_space_spawn", {
     description = "Set the space_spawn pos to given coords, for use with /space_spawn",
     privs= {server=true},
     params = "<x> <y> <z>",
-    func = function(name,param)
-        local coords = {}
-        local input = {}
-        if param ~= nil then
-            input = param:split(" ")
+    func = function(name)
+        local player = minetest.get_player_by_name(name)
+        local pos = player.get_pos(player)
+        
+        if pos.y >= spaceBegin then
+            space_spawn = pos
+            storage:set_string("space_spawn", minetest.serialize(space_spawn))
+            minetest.chat_send_player(name, "set spawn to"..minetest.pos_to_string(pos, 2))
         else
-            minetest.chat_send_player(name, "no args found")
-            return 0
-        end
-        local bools = 0
-        if #input == 3 then
-            for k in ipairs(input) do
-                if (not string.find(input[k],"%a")) and input[k] ~="" then --ensures no letters are found
-                    bools = bools+1
-                    input[k] = tonumber(input[k])
-                end
-            end
-
-            if bools == 3 then
-                if input[2] > spaceBegin then
-                    space_spawn.x = input[1]
-                    space_spawn.y = input[2]
-                    space_spawn.z = input[3]
-                    minetest.chat_send_player(name, "set space_spawn to "..minetest.pos_to_string(space_spawn, 2))
-                end
-                
-                
-            else
-                minetest.chat_send_player(name, "error. insufficient input and/or bad input. please check input. falback space_spawn set to"..minetest.pos_to_string(space_spawn, 2))
-            end        
+            minetest.chat_send_player(name, "sorry, you are not in space... space_spawn remains"..minetest.pos_to_string(space_spawn,2))
         end
     end
 
