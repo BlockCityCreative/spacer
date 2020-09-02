@@ -42,7 +42,7 @@ minetest.register_chatcommand("space", {
             else
                 minetest.set_node(pos, {name="spacer:seed"})
             end
-            minetest.chat_send_player(name, "node placed at "..minet)
+            minetest.chat_send_player(name, "node placed at "..minetest.pos_to_string(pos, 2))
             numTimes[name]=(numTimes[name]or 0) +1
             print(numTimes[name])
         else
