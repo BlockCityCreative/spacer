@@ -1,6 +1,6 @@
 local storage = minetest.get_mod_storage()
-local maxTimes = 6-- maximum times -1 the command space can be used on one loading of the mod
-local spaceBegin = 20002
+local maxTimes = 5-- maximum times -1 the command space can be used on one loading of the mod
+local spaceBegin = 20000
 local space_spawn = {}
 if storage:get_string("space_spawn") ~= "" then -- if space_spawn has been set, the value will not be nil
     space_spawn=minetest.deserialize(storage:get_string("space_spawn"))
@@ -9,8 +9,8 @@ else -- fallback space_spawn
     space_spawn.y = spaceBegin
     space_spawn.z = 20000
 end
-
-
+spaceBegin = spaceBegin+2
+maxTimes = maxTimes + 1
 
 if not minetest.get_modpath("default") then
     minetest.register_node("spacer:seed", {
@@ -47,12 +47,12 @@ minetest.register_chatcommand("space", {
             print(numTimes[name])
         else
             if pos["y"] < spaceBegin then
-                minetest.chat_send_player(name, "goto space please. in this server, space begins at"..spaceBegin)
+                minetest.chat_send_player(name, "goto space please. in this server, space begins at "..spaceBegin)
             end
 
             if not canPlace then
                 minetest.chat_send_player(name, "You have been suspected of griefing. this incident will be reported")
-                print(name.."attempts to place node at protected area at pos"..minetest.pos_to_string(pos, 1))
+                print(name.."attempts to place node at protected area at pos "..minetest.pos_to_string(pos, 1))
                 
             end
 
